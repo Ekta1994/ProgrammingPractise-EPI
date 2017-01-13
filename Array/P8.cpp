@@ -1,6 +1,7 @@
 /**
  * Minimum battery energy to complete the robot's path
- * 
+ * Given array input as coordinates of the path along which robot moves, find the minimum battery energy required to complete the path
+ * if it loses energy while going towards an increasing path (a[i+1]>a[i]) and gains energy otherwise ( a[i] > a[i+1] )
  **/
 
 #include <iostream>
@@ -18,19 +19,7 @@ int main() {
 	for ( i=0; i<n; i++ ) 
 		cin>>a[i];
 	
-	int idx=-1;
-	
-	for ( i=n-1; i>=1; i-- ) {
-		if ( a[i] > a[i-1]){
-			idx = i;
-			break;
-		}
-	}
-	
-	if ( idx == -1 ) {
-		cout << "Robot doesn't need any battery to start with ";
-		return 0;
-	}
+	// dp[i] indicates what minimum energy is required to reach the end point from i.
 	
 	int dp[n];
 	int minEnergy = 0;
@@ -39,10 +28,10 @@ int main() {
 	
 	for ( i=n-2; i>=0; i-- ) {
 		if ( a[i] > a[i+1] ) {
-			dp[i] = max(0, dp[i+1] - (a[i]-a[i+1]));
+			dp[i] = max(0, dp[i+1] - (a[i]-a[i+1]));  // energy gain while moving from a[i] to a[i+1]
 		}
 		else
-			dp[i] = dp[i+1] + a[i+1] - a[i];
+			dp[i] = dp[i+1] + a[i+1] - a[i]; // energy loss here
 	}
 	
 	cout << dp[0] << endl;
