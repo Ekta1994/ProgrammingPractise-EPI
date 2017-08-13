@@ -1,0 +1,21 @@
+Notes:
+Let's take a look at the common implementation of binary search. 
+
+int binary_seacrch(int a[], int n, int k) {
+	int low =0, high = n-1, mid;
+	while(low<=high) {
+		mid = (low+high)/2; // definition 1
+		if ( a[mid] < k )
+			low = mid+1;
+		else if ( a[mid] > k )
+			high = mid-1;
+		else
+			return 1;
+	}
+	return 0;
+}
+
+What is the mistake in the above code? The flaw is the calculation of mid variable. When low and high are sufficiently high, mid can overflow if calculated this way.
+Therefore, mid should always be calculated as (low+(high-low)/2) - definition 2.
+Forget the point that high and low refer to array indices, then we can see the modified mid variable can also overflow if high is a very big positive number and low is a very less (-ve) number. 
+Therefore, solution is to check the signs of low and high. If both are positive, use definition 2. Else, use definition 1.
